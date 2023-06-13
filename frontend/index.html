@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CRUD</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./script.js"></script>
+</head>
+<h1>Listagem de Usuários</h1>
+<p><a href="./inserir.html">INSERIR NOVO USUÁRIO</a></p>
+
+<script>
+    const url = '/usuarios';
+
+    fetch(url)      //realiza uma chamada para o servidor web através do método fetch() passando a URL como parâmetro.
+    .then((response) => {       //assim que a chamada é concluída, a primeira função then() é executada.
+        return response.json();     //resposta da chamada é convertida em formato JSON utilizando o método json() 
+    })
+    .then((data) => {       // segunda função then()
+        let usuarios = data;        //o conteúdo JSON é atribuído a uma variável usuarios
+        let saida = '';     //é criada uma string saida vazia
+        usuarios.map(function(usuario) {        // Para cada usuário na lista de usuarios, a função map() é usada para mapear cada objeto do usuário para uma string formatada.  
+        saida += '<strong> '+ `${usuario.nome_completo}` + '</strong> ' + `${usuario.email}`  + ' - ' +  `${usuario.telefone}`;
+        //saida += ' - <a href="/atualizaUsuario?userId=' + `${usuario.userId}` + '">EDITAR</a>';
+        saida += ' - <a href="./atualizar.html?userId='+`${usuario.userId}`+'">EDITAR</a>';
+        saida += ' | <a href="/removeUsuario?userId='+`${usuario.userId}`+'">REMOVER</a></br>';
+        });     //A string saida é atualizada com as informações do usuário atual e depois é concatenada com as informações de outros usuários.
+        document.getElementById('resultado').innerHTML = saida;     //Depois que a string saida é criada e atualizada com as informações de todos os usuários, ela é inserida em um elemento HTML com o ID resultado usando o método innerHTML do objeto document.
+    })
+    .catch(function(error) {        //Se ocorrer algum erro durante a chamada, a função catch() será executada e imprimirá o erro no console.
+        console.log(error);
+    });
+    
+</script>
+
+<body>
+    <div id="resultado"></div>
+    <div id="resultado2"></div>
+</body>
+</html>
